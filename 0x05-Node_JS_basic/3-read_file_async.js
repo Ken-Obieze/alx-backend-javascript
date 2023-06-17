@@ -13,7 +13,7 @@ function countStudents(path) {
         const firstNameIndex = headers.indexOf('firstname');
 
         const students = {};
-        for (let i = 1; i < lines.length; i++) {
+        for (let i = 1; i < lines.length; i += 1) {
           const fields = lines[i].split(',');
           const field = fields[fieldIndex].trim();
           const firstName = fields[firstNameIndex].trim();
