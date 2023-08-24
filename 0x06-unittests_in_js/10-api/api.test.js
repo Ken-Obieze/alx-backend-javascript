@@ -1,54 +1,62 @@
 const request = require('request');
 const { expect } = require('chai');
 
-const apiUrl = 'http://localhost:7865';
-
 describe('Login endpoint', () => {
-  it('should return the correct message when POST /login is called', async () => {
+  it('should return the correct message when POST /login is called', (done) => {
     const options = {
-      url: `${apiUrl}/login`,
+      url: 'http://localhost:7865/login',
       method: 'POST',
       json: {
         userName: 'Betty'
       }
     };
 
-    const response = await request(options);
-    expect(response.body).to.equal('Welcome Betty');
+    request(options, (error, response, body) => {
+      expect(body).to.equal('Welcome Betty');
+      done();
+    });
   });
 });
 
 describe('Available payments endpoint', () => {
-  it('should return the correct payment methods when GET /available_payments is called', async () => {
-    const response = await request.get(`${apiUrl}/available_payments`);
-    const expectedPaymentMethods = {
-      payment_methods: {
-        credit_cards: true,
-        paypal: false
-      }
-    };
-    const parsedBody = JSON.parse(response.body);
-    expect(parsedBody).to.deep.equal(expectedPaymentMethods);
-  });
+  it('should return the correct payment methods when GET /available_payments is called', (done) => {
+    request.get('http://localhost:7865/available_payments', (error, response, body) => {
+      const expectedPaymentMethods = {
+        payment_methods: {
+          credit_cards: true,
+          paypal: false
+        }
+      };
+      const parsedBody = JSON.parse(body);
+      expect(parsedBody).to.deep.equal(expectedPaymentMethods);
+      done();
+    });
+  });;
 });
 
 describe('GET /', () => {
-  it('returns "Welcome to the payment system"', async () => {
-    const response = await request(apiUrl);
-    expect(response.statusCode).to.equal(200);
-    expect(response.body).to.equal('Welcome to the payment system');
+  it('returns "Welcome to the payment system"', (done) => {
+    request('http://localhost:7865', (error, response, body) => {
+      expect(response.statusCode).to.equal(200);
+      expect(body).to.equal('Welcome to the payment system');
+      done();
+    });
   });
 });
 
 describe('GET /cart/:id', () => {
-  it('returns "Payment methods for cart :id"', async () => {
-    const response = await request(`${apiUrl}/cart/12`);
-    expect(response.statusCode).to.equal(200);
-    expect(response.body).to.equal('Payment methods for cart 12');
+  it('returns "Payment methods for cart :id"', (done) => {
+    request('http://localhost:7865/cart/12', (error, response, body) => {
+      expect(response.statusCode).to.equal(200);
+      expect(body).to.equal('Payment methods for cart 12');
+      done();
+    });
   });
 
-  it('returns 404 Not Found for non-numeric id', async () => {
-    const response = await request(`${apiUrl}/cart/hello`);
-    expect(response.statusCode).to.equal(404);
+  it('returns 404 Not Found for non-numeric id', (done) => {
+    request('http://localhost:7865/cart/hello', (error, response, body) => {
+      expect(response.statusCode).to.equal(404);
+      done();
+    });
   });
 });
