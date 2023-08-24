@@ -9,6 +9,6 @@
   },
   "dependencies": {
     "chai": "^4.3.8",
-    "sinon": "^15.1.2"
+    "sinon": "^15.2.0"
   }
 }
