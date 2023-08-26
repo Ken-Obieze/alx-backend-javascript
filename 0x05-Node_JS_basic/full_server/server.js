@@ -1,21 +1,23 @@
 import express from 'express';
-import routes from './routes/index.js';
+import path from 'path';
+import router from './routes';
 
 const app = express();
 const port = 1245;
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+
+const databaseFileName = process.argv[2];
 
 app.use((req, res, next) => {
-  req.database = process.argv[2];
+  req.databaseFileName = databaseFileName;
   next();
 });
 
-app.use('/', routes);
+app.use('/', router);
 
 app.listen(port, () => {
-  console.log(`Server listening on port ${port}`);
+  console.log(`Express server is listening on port ${port}`);
 });
 
 export default app;
