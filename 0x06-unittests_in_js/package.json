@@ -1,0 +1,14 @@
+{
+  "name": "unittest",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "mocha"
+  },
+  "devDependencies": {
+    "mocha": "^9.2.2"
+  },
+  "dependencies": {
+    "chai": "^4.3.8",
+    "sinon": "^15.2.0"
+  }
+}
